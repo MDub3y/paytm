@@ -1,11 +1,11 @@
 - Clone the repo
 
 ```jsx
-git clone https://github.com/100xdevs-cohort-2/week-17-final-code
+git clone https://github.com/Xtackx/paytm/edit/main/README.md
 ```
 
 - npm install
-- Run postgres either locally or on the cloud (neon.tech)
+- Run postgres either locally 
 
 ```jsx
 docker run  -e POSTGRES_PASSWORD=mysecretpassword -d -p 5432:5432 postgres
