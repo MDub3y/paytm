@@ -12,7 +12,8 @@
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
     "prettier": "^3.2.5",
-    "turbo": "latest"
+    "turbo": "latest",
+    "start-user-app": "cd ./apps/user-app && npm run start"
   },
   "engines": {
     "node": ">=18"
