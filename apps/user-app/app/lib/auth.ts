@@ -1,7 +1,8 @@
 import db from "@repo/db/client";
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcrypt";
-import { NextAuthOptions } from "next-auth";
+import { Account, NextAuthOptions, User } from "next-auth";
+import { AdapterUser } from "next-auth/adapters";
 
 interface Credentials{
     phone: string,
@@ -20,7 +21,7 @@ export const authOptions: NextAuthOptions = {
           async authorize(credentials: Credentials | undefined) {
             // Do zod validation, OTP validation here
             if(!credentials){ return null; }
-            
+
             const hashedPassword = await bcrypt.hash(credentials.password, 10);
             const existingUser = await db.user.findFirst({
                 where: {
@@ -34,7 +35,7 @@ export const authOptions: NextAuthOptions = {
                     return {
                         id: existingUser.id.toString(),
                         name: existingUser.name,
-                        email: existingUser.number
+                        number: existingUser.number
                     }
                 }
                 return null;
@@ -51,7 +52,7 @@ export const authOptions: NextAuthOptions = {
                 return {
                     id: user.id.toString(),
                     name: user.name,
-                    email: user.number
+                    number: user.number
                 }
             } catch(e) {
                 console.error(e);
@@ -68,7 +69,16 @@ export const authOptions: NextAuthOptions = {
             session.user.id = token.sub
 
             return session
-        }
+        },
+
+        async signIn({ user, account, profile }: { user: User | AdapterUser; account: Account | null; profile?: any }) {
+            // Ensure that the user email is defined
+            if (user?.id) {
+              // You can add your own signIn logic here (e.g., check the account provider)
+              return true;
+            }
+            return false; // Reject sign-in if user.email is not defined
+          }
     }
   }
   
